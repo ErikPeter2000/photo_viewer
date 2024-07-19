@@ -3,3 +3,4 @@ from .models import Album, ImageReference, Photographer
 
 admin.site.register(Album)
 admin.site.register(ImageReference)
+admin.site.register(Photographer)
