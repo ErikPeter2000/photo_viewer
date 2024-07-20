@@ -1,0 +1,35 @@
+:root {
+    --text-color: #0b0b0b;
+    --background-color: #ffffff;
+    --banner-color: #f0f0f0;
+    --banner-border-color: #d0d0d0;
+    --secondary-color: #007bff;
+    --accent-color: #ffc107;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+.banner {
+    background-color: var(--banner-color);
+    padding: 1em;
+    border-bottom: 1px solid var(--banner-border-color);
+}
+
+.banner h1{
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.5em;
+    font-weight: 500;
+}
+
+.banner p {
+    margin: 0;
+}

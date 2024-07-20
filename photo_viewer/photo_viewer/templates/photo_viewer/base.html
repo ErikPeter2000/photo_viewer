@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title>
+      {% block title %}
+        Photo Viewer
+      {% endblock %}
+    </title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'photo_viewer/styles.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      {% include './includes/banner.html' with banner_description='Albums' %}
+      <div class="content">
+        {% block content %}
+
+        {% endblock %}
+      </div>
+    </div>
+  </body>
+</html>
