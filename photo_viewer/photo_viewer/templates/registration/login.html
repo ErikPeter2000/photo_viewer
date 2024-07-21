@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="center-panel">
+  <div class="login-form">
     <form method="post">
       {% csrf_token %}
       {{ form.as_p }}
