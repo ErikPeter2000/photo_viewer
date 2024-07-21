@@ -43,7 +43,7 @@ html, body {
 .banner-right button {
     margin: auto;
 }
-.banner-right form {
+form {
     margin: 0;
 }
 .banner a {

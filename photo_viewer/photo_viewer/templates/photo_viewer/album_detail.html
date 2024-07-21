@@ -7,9 +7,13 @@
 {% block content %}
   <div class="flex-row">
     <h1>{{ album.name }}</h1>
-    <button onclick="window.location.href='{% url 'upload_image' pk=album.id %}'" class="button-link">Upload Image</button>
+    <form id="uploadImagesForm" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="file" name="images" multiple />
+      <button type="submit">Upload Images</button>
+    </form>
   </div>
-  
+
   <div class="photos-grid">
     {% for photo in images_list.all %}
       <div class="photo">
@@ -18,4 +22,35 @@
       </div>
     {% endfor %}
   </div>
+
+  <script>
+    document.getElementById('uploadImagesForm').addEventListener('submit', function (e) {
+      e.preventDefault() // Prevent the default form submission
+      const formData = new FormData(this)
+      const csrfToken = formData.get('csrfmiddlewaretoken') // Get the CSRF token from the form
+      fetch(`{% url 'upload_image' pk=album.id %}`, {
+        // Use the Django URL template tag to generate the URL
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': csrfToken
+        },
+        credentials: 'same-origin' // Necessary for including CSRF token
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json() // Or handle the response in a way that suits your app
+          }
+          throw new Error('Network response was not ok.')
+        })
+        .then((data) => {
+          console.log(data) // Handle success
+        })
+        .catch((error) => {
+          console.error('There has been a problem with your fetch operation:', error)
+        }).finally(() => {
+          window.location.reload() // Reload the page after the upload is complete
+        })
+    })
+  </script>
 {% endblock %}

@@ -1,6 +1,9 @@
-from django.shortcuts import render, redirect
+from datetime import datetime
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.views import View, generic
 from .models import Album, PhotographerImage
@@ -33,18 +36,14 @@ class AlbumDetailView(LoginRequiredMixin, View):
         print("images found:", len(images))
         return render(request, self.template_name, {'album': album, 'images_list': images})
 
-class UploadImageView(LoginRequiredMixin, View):
-    login_url = 'accounts/login/'
-    def get(self, request, *args, **kwargs):
-        return render(request, 'photo_viewer/upload_image.html')
-
-    def post(self, request, *args, **kwargs):
-        album_id = kwargs['pk']
-        form = PhotographerImageForm(request.POST, request.FILES, request=request, album_id=album_id)
-        if form.is_valid():
-            form.save()
-            return redirect('index')
-        return render(request, 'photo_viewer/upload_image.html', {'form': form})
+@require_POST
+@login_required
+def upload_images(request, pk):
+    album = get_object_or_404(Album, pk=pk)
+    images = request.FILES.getlist('images')
+    for image in images:
+        PhotographerImage.objects.create(image=image, album=album, date_created=datetime.now(), owner=request.user)
+    return JsonResponse({'message': 'Images uploaded successfully'}, status=200)
 
 @login_required
 def profile_view(request):
