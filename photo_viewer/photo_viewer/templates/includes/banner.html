@@ -1,12 +1,22 @@
 <div class="banner-container">
   <div class="banner">
-    <h1 class="banner_title">CMS Media Viewer</h1>
+    <div class="banner-left">
+      <h1 class="banner_title">CMS Media Viewer</h1>
+      <a href="{% url 'index' %}">Home</a>
+    </div>
+    <div class="banner-right">
+      <h2>{{ user.username }}</h2>
+      <form action="{% url 'profile' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Profile</button>
+      </form>
+    </div>
   </div>
   <div class="banner-messages">
     {% if messages %}
       <ul class="messages">
         {% for message in messages %}
-          <li class="message {{message.tags}}">{{ message }}</li>
+          <li class="message {{ message.tags }}">{{ message }}</li>
         {% endfor %}
       </ul>
     {% endif %}

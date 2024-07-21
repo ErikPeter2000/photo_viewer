@@ -23,15 +23,42 @@ html, body {
     background-color: var(--banner-color);
     padding: 1em;
     border-bottom: 1px solid var(--banner-border-color);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
-
+.banner-left {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+}
+.banner-right {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+}
+.banner-right button {
+    margin: auto;
+}
+.banner-right form {
+    margin: 0;
+}
+.banner a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+.banner a:hover {
+    text-decoration: underline;
+}
 .banner h1{
     margin: 0;
     color: var(--text-color);
     font-size: 1.5em;
     font-weight: 500;
 }
-
 .banner p {
     margin: 0;
 }
@@ -79,11 +106,13 @@ html, body {
 .login-form p {
     margin: 0.5em 0;
 }
+.login-form button {    
+    margin: 1.0em auto 1.0em;
+}
 
 button {
     padding: 0.5em 1em;
     height: 2.5em;
-    margin: 1.0em auto 1.0em;
     border: 1px solid var(--banner-border-color);
     border-radius: 5px;
     background-color: var(--banner-color);
