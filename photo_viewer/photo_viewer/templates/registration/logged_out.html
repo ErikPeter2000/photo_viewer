@@ -1,0 +1,13 @@
+{% extends 'includes/base.html' %}
+
+{% block title %}
+  Logged Out
+{% endblock %}
+
+{% block content %}
+  <div class="center-panel">
+    <h1>Logged Out</h1>
+    <p>You have been successfully logged out.</p>
+    <a href="{% url 'login' %}">Login</a>
+  </div>
+{% endblock %}

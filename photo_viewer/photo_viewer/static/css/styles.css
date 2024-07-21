@@ -33,3 +33,17 @@ html, body {
 .banner p {
     margin: 0;
 }
+
+.center-panel {
+    margin: 1em auto;
+    max-width: 800px;
+    padding: 1em;
+    border: 1px solid var(--banner-border-color);
+    border-radius: 5px;
+    background-color: var(--background-color);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+    padding: 1em;
+}
