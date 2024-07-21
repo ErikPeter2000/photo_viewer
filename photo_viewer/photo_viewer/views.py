@@ -8,15 +8,14 @@ from django.contrib import messages
 from django.views import View, generic
 from .models import Album, PhotographerImage
 from .storage import create_image_preview
+import logging
 
-MAX_ALBUMS = 5
+MAX_DISPLAY_ALBUMS = 5
+logger = logging.getLogger(__name__)
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from .models import Album
-
-MAX_ALBUMS = 5
-
 
 class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = "photo_viewer/index.html"
@@ -24,7 +23,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     login_url = "accounts/login/"
 
     def get_queryset(self):
-        return Album.objects.order_by("-date_created")[:MAX_ALBUMS]
+        return Album.objects.order_by("-date_created")[:MAX_DISPLAY_ALBUMS]
 
 
 class AlbumDetailView(LoginRequiredMixin, View):
@@ -70,20 +69,27 @@ def upload_images(request, album_id):
     images = request.FILES.getlist("images")
     if len(images) == 0:
         return JsonResponse({"message": "Please upload an image."}, status=200)
-    for image in images:
-        preview = create_image_preview(image)
-        PhotographerImage.objects.create(
-            image=image,
-            album=album,
-            date_created=datetime.now(),
-            owner=request.user,
-            preview=preview,
+    try:
+        # TODO: push to some queue and process in the background
+        # TODO: better image validation
+        for image in images:
+            preview = create_image_preview(image)
+            PhotographerImage.objects.create(
+                image=image,
+                album=album,
+                date_created=datetime.now(),
+                owner=request.user,
+                preview=preview,
+            )
+        messages.success(
+            request,
+            f"{len(images)} Image{'s' if len(images) > 1 else ''} uploaded successfully.",
         )
-    messages.success(
-        request,
-        f"{len(images)} Image{'s' if len(images) > 1 else ''} uploaded successfully.",
-    )
-    return JsonResponse({"message": "Images uploaded successfully"}, status=200)
+        return JsonResponse({"message": "Images uploaded successfully"}, status=200)
+    except Exception as e:
+        messages.error(request, "Error uploading images.")
+        logger.error(f"Error uploading images: {e}\nrequest:\n{str(request)}")
+        return JsonResponse({"message": "Error uploading images."}, status=500)
 
 @require_POST
 @login_required
