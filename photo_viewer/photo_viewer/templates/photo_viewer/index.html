@@ -5,4 +5,12 @@
 {% endblock %}
 
 {% block content %}
+  <h1>Albums</h1>
+  <ul class="albums">
+    {% for album in latest_album_list %}
+      <li class="album">
+        <a href="{% url 'album_detail' pk=album.id %}">{{ album.name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
 {% endblock %}

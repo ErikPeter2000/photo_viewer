@@ -1,0 +1,21 @@
+{% extends 'includes/base.html' %}
+
+{% block title %}
+  Album Details
+{% endblock %}
+
+{% block content %}
+  <div class="flex-row">
+    <h1>{{ album.name }}</h1>
+    <button onclick="window.location.href='{% url 'upload_image' pk=album.id %}'" class="button-link">Upload Image</button>
+  </div>
+  
+  <div class="photos-grid">
+    {% for photo in images_list.all %}
+      <div class="photo">
+        <img src="{{ photo.image.url }}" alt="{{ photo.title }}" />
+        <p>{{ photo.title }}</p>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

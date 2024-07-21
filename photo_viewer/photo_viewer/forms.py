@@ -11,6 +11,7 @@ class PhotographerImageForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
+        self.album_id = kwargs.pop('album_id', None)
         super(PhotographerImageForm, self).__init__(*args, **kwargs)
     
     def save(self, commit=True):
@@ -19,6 +20,7 @@ class PhotographerImageForm(forms.ModelForm):
         instance = super().save(commit=False)
         instance.date_created = datetime.now()
         instance.owner_id = self.request.user.id
+        instance.album_id = self.album_id
         if commit:
             instance.save()
             messages.success(self.request, 'Image uploaded successfully.')

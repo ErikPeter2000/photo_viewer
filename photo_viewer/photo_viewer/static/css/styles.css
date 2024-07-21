@@ -129,6 +129,7 @@ button:hover {
 .flex-row {
     display: inline-flex;
     flex-direction: row;
+    align-items: center;
     gap: 1em;
 }
 .messages {
@@ -136,6 +137,7 @@ button:hover {
     padding: 0;
     list-style-type: none;
 }
+
 .message {
     font-size: small;
     list-style-type: none;
@@ -151,6 +153,17 @@ button:hover {
     color: darkred;
     background-color: lightcoral;
     border-bottom: 1px solid darkred;
+}
+
+.photos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1em;
+}
+.photo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
 }
 
 h2 {
