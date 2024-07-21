@@ -85,7 +85,6 @@ def upload_images(request, album_id):
     )
     return JsonResponse({"message": "Images uploaded successfully"}, status=200)
 
-
 @require_POST
 @login_required
 def delete_image(request, *args, **kwargs):
@@ -103,7 +102,6 @@ def delete_image(request, *args, **kwargs):
     except:
         messages.error(request, "Image not found.")
         return JsonResponse({"message": "Image not found"}, status=404)
-
 
 @login_required
 def profile_view(request):

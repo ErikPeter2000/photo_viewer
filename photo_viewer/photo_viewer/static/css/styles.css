@@ -202,8 +202,8 @@ button:hover {
 .image {
     width: 100%;
     height: auto;
-    border: 1px solid var(--banner-border-color);
-    border-radius: 5px;
+    max-height: 500px;
+    object-fit: contain;
 }
 
 h2 {
