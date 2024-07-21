@@ -1,0 +1,15 @@
+{% extends 'includes/base.html' %}
+
+{% block title %}
+    Image Details
+{% endblock %}
+
+{% block content %}
+<div class="image-detail center-panel">
+    <img src="{{ image.image.url }}" alt="{{ image.title }}" class="photo"/>
+    <h2>{{ image.title }}</h2>
+    <p>{{ image.description }}</p>
+    <p>Uploaded by: {{ uploaded_by }}</p>
+    <p>Uploaded at: {{ uploaded_at }}</p>
+</div>
+{% endblock %}

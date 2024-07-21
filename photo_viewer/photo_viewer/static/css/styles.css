@@ -159,10 +159,16 @@ button:hover {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1em;
 }
-.photo {
+.preview-photo {
     display: flex;
     flex-direction: column;
     gap: 0.5em;
+}
+.photo {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--banner-border-color);
+    border-radius: 5px;
 }
 
 h2 {

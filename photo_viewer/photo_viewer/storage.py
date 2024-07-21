@@ -38,4 +38,3 @@ def create_image_preview(image_file, size=PREVIEW_SIZE):
         image_file = File(image_io, name=image_file.name)
         
         return image_file
-    

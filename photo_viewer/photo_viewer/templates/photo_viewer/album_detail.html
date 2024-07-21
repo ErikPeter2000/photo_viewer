@@ -16,8 +16,10 @@
 
   <div class="photos-grid">
     {% for photo in images_list.all %}
-      <div class="photo">
-        <img src="{{ photo.preview.url }}" alt="{{ photo.title }}" />
+      <div class="preview-photo">
+        <a href="{% url 'image_detail' album_id=album.id image_id=photo.id %}">
+          <img src="{{ photo.preview.url }}" alt="{{ photo.title }}" />
+        </a>
         <p>{{ photo.title }}</p>
       </div>
     {% endfor %}
@@ -28,7 +30,7 @@
       e.preventDefault() // Prevent the default form submission
       const formData = new FormData(this)
       const csrfToken = formData.get('csrfmiddlewaretoken') // Get the CSRF token from the form
-      fetch(`{% url 'upload_image' pk=album.id %}`, {
+      fetch(`{% url 'upload_image' album_id=album.id %}`, {
         // Use the Django URL template tag to generate the URL
         method: 'POST',
         body: formData,
