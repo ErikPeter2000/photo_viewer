@@ -1,0 +1,10 @@
+<div class="preview-image-container">
+    <a href="{% url 'image_detail' album_id=album.id image_id=image.id %}" class="preview-image"><img src="{{ image.preview.url }}" alt="{{ image.title }}" /></a>
+    <div class="preview-image-toolbar">
+      {% if image.owner_id == user_id %}
+      {% include 'includes/icons/delete.html' with fill_color='#ffffff' image_id=image.id %}
+      {% endif %}
+      {% include 'includes/icons/flag.html' with fill_color='#ffffff' %}
+    </div>
+  </div>
+  

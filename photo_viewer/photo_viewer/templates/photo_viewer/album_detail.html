@@ -15,13 +15,8 @@
   </div>
 
   <div class="photos-grid">
-    {% for photo in images_list.all %}
-      <div class="preview-photo">
-        <a href="{% url 'image_detail' album_id=album.id image_id=photo.id %}">
-          <img src="{{ photo.preview.url }}" alt="{{ photo.title }}" />
-        </a>
-        <p>{{ photo.title }}</p>
-      </div>
+    {% for image in images_list.all %}
+      {% include 'includes/image_preview.html' with image=image album=album user=user_id %}
     {% endfor %}
   </div>
 
@@ -53,5 +48,38 @@
           console.error('There has been a problem with your fetch operation:', error)
         })
     })
+  </script>
+  {% comment %} <script>
+    $(document).ready(function () {
+      let default_color = $('.preview-image-toolbar').css('background-color')
+      $('.preview-image-container').hover(
+        function () {
+          $(this).find('.preview-image-toolbar').css('opacity', '1')
+        },
+        function () {
+          $(this).find('.preview-image-toolbar').css('opacity', '0')
+        }
+      )
+    })
+  </script> {% endcomment %}
+  <script>
+    function delete_image(id) {
+      // TODO: Use the Django URL template tag to generate the URL
+      let url = `{{ request.scheme }}://{{ request.get_host }}/albums/{{ album.id }}/images/${id}/delete`
+      $.ajax({
+        url,
+        type: 'POST',
+        data: {
+          image_id: id,
+          csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function () {
+          window.location.reload() // Reload the page on success
+        },
+        error: function (data) {
+          console.error('There has been a problem with your fetch operation:', data)
+        }
+      })
+    }
   </script>
 {% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Report Image
+{% endblock %}
+
+{% block content %}
+  <div class="center-panel">
+    <h1>Report Image</h1>
+    <form method="post">
+      {% csrf_token %}
+      <label for="reason">Reason:</label>
+      <select name="reason" id="reason">
+        <option value="inappropriate">Inappropriate</option>
+        <option value="spam">Spam</option>
+        <option value="other">Other</option>
+      </select>
+      <label for="description">Description:</label>
+      <textarea name="description" id="description"></textarea>
+      <button type="submit">Report</button>
+    </form>
+  </div>
+{% endblock %}
