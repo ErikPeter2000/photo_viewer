@@ -143,16 +143,15 @@ button:hover {
     list-style-type: none;
     padding: 0.5em;
     margin: 0;
+    border-bottom: 1px solid var(--banner-border-color);
 }
 .message.success{
     color: darkgreen;
     background-color: lightgreen;
-    border-bottom: 1px solid darkgreen;
 }
 .message.error{
     color: darkred;
     background-color: lightcoral;
-    border-bottom: 1px solid darkred;
 }
 
 .photos-grid {

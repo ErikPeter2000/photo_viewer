@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.views import View, generic
 from .models import Album, PhotographerImage
 from .forms import PhotographerImageForm
+from .storage import create_image_preview
 
 MAX_ALBUMS = 5
     
@@ -41,8 +42,12 @@ class AlbumDetailView(LoginRequiredMixin, View):
 def upload_images(request, pk):
     album = get_object_or_404(Album, pk=pk)
     images = request.FILES.getlist('images')
+    if len(images) == 0:
+        return JsonResponse({'message': 'Please upload an image.'}, status=200)
     for image in images:
-        PhotographerImage.objects.create(image=image, album=album, date_created=datetime.now(), owner=request.user)
+        preview = create_image_preview(image)
+        PhotographerImage.objects.create(image=image, album=album, date_created=datetime.now(), owner=request.user, preview=preview)
+    messages.success(request, f"{len(images)} Images uploaded successfully.")
     return JsonResponse({'message': 'Images uploaded successfully'}, status=200)
 
 @login_required

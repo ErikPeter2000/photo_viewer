@@ -17,7 +17,7 @@
   <div class="photos-grid">
     {% for photo in images_list.all %}
       <div class="photo">
-        <img src="{{ photo.image.url }}" alt="{{ photo.title }}" />
+        <img src="{{ photo.preview.url }}" alt="{{ photo.title }}" />
         <p>{{ photo.title }}</p>
       </div>
     {% endfor %}
@@ -45,11 +45,10 @@
         })
         .then((data) => {
           console.log(data) // Handle success
+          window.location.reload() // Reload the page after the upload is complete
         })
         .catch((error) => {
           console.error('There has been a problem with your fetch operation:', error)
-        }).finally(() => {
-          window.location.reload() // Reload the page after the upload is complete
         })
     })
   </script>
