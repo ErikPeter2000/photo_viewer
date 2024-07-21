@@ -1,5 +1,8 @@
 # plans and sketches
-/planning/
+planning/
+
+# storage
+photo_viewer/media/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

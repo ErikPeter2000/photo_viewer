@@ -3,7 +3,7 @@
     --background-color: #ffffff;
     --banner-color: #f0f0f0;
     --banner-color-darker: #d0d0d0;
-    --banner-border-color: #d0d0d0;
+    --banner-border-color: #a0a0a0;
     --banner-border-color-darker: #b0b0b0;
     --secondary-color: #7c7c7c;
     --accent-color: #ffc107;
@@ -101,6 +101,27 @@ button:hover {
     display: inline-flex;
     flex-direction: row;
     gap: 1em;
+}
+.messages {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+.message {
+    font-size: small;
+    list-style-type: none;
+    padding: 0.5em;
+    margin: 0;
+}
+.message.success{
+    color: darkgreen;
+    background-color: lightgreen;
+    border-bottom: 1px solid darkgreen;
+}
+.message.error{
+    color: darkred;
+    background-color: lightcoral;
+    border-bottom: 1px solid darkred;
 }
 
 h2 {
