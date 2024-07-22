@@ -5,14 +5,17 @@
 {% endblock %}
 
 {% block content %}
-  <div class="flex-row">
-    <h1 class="text-3xl mt-2 ms-2 mb-5">{{ album.name }}</h1>
-    <form id="uploadImagesForm" method="post" enctype="multipart/form-data" class="mb-5">
+<div class="mx-3">
+  <div class="flex items-center">
+    <h1 class="section-title">{{ album.name }}</h1>
+    <form id="uploadImagesForm" method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      <input type="file" name="images" multiple />
-      <button type="submit">Upload Images</button>
+      <label for="file_input" class="button">Upload Images</label>
+      <input id="file_input" type="file" name="images" multiple/>
     </form>
   </div>
+
+  <hr class="mb-5">
 
   <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1em;">
     {% for image in images_list.all %}
@@ -21,7 +24,10 @@
   </div>
 
   <script>
-    document.getElementById('uploadImagesForm').addEventListener('submit', function (e) {
+    $(uploadImagesForm).on('change', function () {
+      $(this).submit()
+    });
+    $(uploadImagesForm).on('submit', function (e) {
       e.preventDefault() // Prevent the default form submission
       const formData = new FormData(this)
       const csrfToken = formData.get('csrfmiddlewaretoken') // Get the CSRF token from the form
@@ -82,4 +88,5 @@
       })
     }
   </script>
+</div>
 {% endblock %}

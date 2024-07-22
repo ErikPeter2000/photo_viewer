@@ -580,19 +580,65 @@ form {
   color: darkgreen;
 }
 
-button {
+.button {
   color: #FFFFFF;
   margin: 0.2rem 0;
   cursor: pointer;
   border-radius: 1rem;
   padding: 0.5rem 1rem;
   display: inline-block;
-  background-color: #99A1AA;
+  background-color: #8A9097;
   transition: background-color 0.2s;
 }
 
-button:hover {
-  background-color: #848D96;
+.button:hover {
+  background-color: #70777E;
+}
+
+.max-h-80vh {
+  max-height: 80vh;
+}
+
+.center-panel {
+  max-width: 80vh;
+  margin: auto;
+}
+
+.section-title {
+  margin: 1rem 0.5em 1rem 0;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
+li {
+  list-style-type: disc;
+  margin-left: 1.5em;
+}
+
+ol {
+  list-style-type: decimal;
+  margin-left: 1.5em;
+}
+
+input {
+  margin: 0.5rem 0;
+  padding: 0.2rem;
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 640px) {
+  .center-panel {
+    max-width: 100%;
+  }
 }
 
 .static {
@@ -611,20 +657,47 @@ button:hover {
   bottom: 0px;
 }
 
+.left-5 {
+  left: 1.25rem;
+}
+
+.top-0 {
+  top: 0px;
+}
+
 .m-0 {
   margin: 0px;
+}
+
+.mx-3 {
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.my-0 {
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 .mb-5 {
   margin-bottom: 1.25rem;
 }
 
-.ms-2 {
-  margin-inline-start: 0.5rem;
+.ms-3 {
+  margin-inline-start: 0.75rem;
 }
 
 .mt-2 {
   margin-top: 0.5rem;
+}
+
+.mt-3 {
+  margin-top: 0.75rem;
 }
 
 .box-border {
@@ -655,8 +728,16 @@ button:hover {
   align-items: center;
 }
 
+.items-baseline {
+  align-items: baseline;
+}
+
 .justify-between {
   justify-content: space-between;
+}
+
+.gap-1 {
+  gap: 0.25rem;
 }
 
 .gap-3 {
@@ -668,29 +749,53 @@ button:hover {
   background-color: rgb(71 73 73 / var(--tw-bg-opacity));
 }
 
+.bg-green-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(22 163 74 / var(--tw-bg-opacity));
+}
+
 .bg-image-toolbar-background {
   background-color: #00000088;
+}
+
+.bg-red-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(185 28 28 / var(--tw-bg-opacity));
 }
 
 .bg-transparent {
   background-color: transparent;
 }
 
+.object-contain {
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.p-1 {
+  padding: 0.25rem;
+}
+
 .p-2 {
   padding: 0.5rem;
+}
+
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .ps-2 {
   padding-inline-start: 0.5rem;
 }
 
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
-}
-
-.text-lg {
-  font-size: 1.125rem;
+.text-xl {
+  font-size: 1.25rem;
   line-height: 1.75rem;
 }
 
@@ -702,10 +807,6 @@ button:hover {
 .text-image-toolbar-text {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-.underline {
-  text-decoration-line: underline;
 }
 
 .opacity-0 {
@@ -734,6 +835,16 @@ button:hover {
 
 .ease-in-out {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover\:bg-green-800:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(22 101 52 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-red-800:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(153 27 27 / var(--tw-bg-opacity));
 }
 
 .hover\:underline:hover {

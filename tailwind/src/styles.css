@@ -20,7 +20,7 @@ form {
     border-color: theme('colors.success-text');
     color: theme('colors.success-text');
 }
-button {
+.button {
     color: theme('colors.button-text');
     margin: 0.2rem 0;
     cursor: pointer;
@@ -30,8 +30,44 @@ button {
     background-color: theme('colors.button-background');
     transition: background-color 0.2s;
 }
-button:hover {
+.button:hover {
     background-color: theme('colors.button-background-hover');
 }
-
+.max-h-80vh {
+    max-height: 80vh;
+}
+.center-panel {
+    max-width: 80vh;
+    margin: auto;
+}
+.section-title {
+    margin: 1rem 0.5em 1rem 0;
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+}
+li {
+    list-style-type: disc;
+    margin-left: 1.5em;
+}
+ol {
+    list-style-type: decimal;
+    margin-left: 1.5em;
+}
+input {
+    margin: 0.5rem 0;
+    padding: 0.2rem;
+    border-radius: 0.25rem;
+    border: 1px solid #ccc;
+}
+input[type="file"] {
+    display: none;    
+}
+a:hover {
+    text-decoration: underline;
+}
+@media screen and (max-width: 640px) {
+    .center-panel {
+        max-width: 100%;
+    }
+}
 @tailwind utilities;

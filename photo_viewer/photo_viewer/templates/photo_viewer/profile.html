@@ -6,16 +6,16 @@
 
 {% block content %}
   <div class="center-panel">
-    <h2>User Profile</h2>
+    <h2 class="section-title">User Profile</h2>
     <p>Username: {{ user.username }}</p>
     {% if user.email %}
       <p>Email: {{ user.email }}</p>
     {% endif %}
-    <div class="flex-row">
-      <button onclick="window.location.href='{% url 'password_change' %}'" class="button-link">Change Password</button>
+    <div class="flex-row mt-2">
+      <button class="button" onclick="window.location.href='{% url 'password_change' %}'" class="button-link">Change Password</button>
       <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}
-        <button type="submit">Logout</button>
+        <button type="submit" class="button bg-red-700 hover:bg-red-800">Logout</button>
       </form>
     </div>
   </div>

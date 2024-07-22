@@ -20,9 +20,9 @@ module.exports = {
         'success-background': 'lightgreen',
         'image-toolbar-background': '#00000088',
         'image-toolbar-text': '#FFFFFF',
-        'button-background': '#99A1AA',
+        'button-background': '#8A9097',
         'button-text': '#FFFFFF',
-        'button-background-hover': '#848D96',
+        'button-background-hover': '#70777E',
       },
       boxShadow: {
         'darker': '0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
