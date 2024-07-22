@@ -2,8 +2,7 @@
 
 Write-Host "Setting up Django Photo Viewer..."
 Push-Location $PSScriptRoot
-py -m pip install django
-py -m pip install pillow
+py -m pip install -r requirements.txt
 
 # create .env file with Secret Key and credits
 if (-not (Test-Path ".\.env")) {

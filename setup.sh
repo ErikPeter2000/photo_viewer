@@ -1,8 +1,7 @@
 # Setup for Linux
 
 echo "Setting up Django Photo Viewer..."
-pip install django
-pip install pillow
+pip install -r requirements.txt
 
 touch .env
 length=64
