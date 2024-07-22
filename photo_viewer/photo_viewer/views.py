@@ -52,6 +52,7 @@ class AlbumDetailView(LoginRequiredMixin, View):
             if date_taken not in images_by_date:
                 images_by_date[date_taken] = []
             images_by_date[date_taken].append(image)
+        images_by_date = dict(sorted(images_by_date.items(), key=lambda x: x[0], reverse=True))
         return images_by_date
 
 class ImageDetailView(LoginRequiredMixin, View):
