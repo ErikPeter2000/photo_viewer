@@ -12,7 +12,8 @@ class Album(models.Model):
 class PhotographerImage(models.Model):
     image = models.ImageField(upload_to='images/')
     preview = models.ImageField(upload_to='images/previews/', blank=True)
-    date_created = models.DateTimeField()
+    date_taken = models.DateTimeField()
+    date_uploaded = models.DateTimeField()
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
     def __str__(self):

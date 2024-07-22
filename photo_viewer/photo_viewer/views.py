@@ -34,11 +34,22 @@ class AlbumDetailView(LoginRequiredMixin, View):
         album = Album.objects.get(id=kwargs["album_id"])
         user_id = request.user.id
         images = PhotographerImage.objects.filter(album_id=album.id).exclude(imagereport__isnull=False)
+        images = self._group_by_date_taken(images)
+        print(images)
         return render(
             request,
             self.template_name,
             {"album": album, "images_list": images, "user_id": user_id},
         )
+        
+    def _group_by_date_taken(self, images):
+        images_by_date = {}
+        for image in images:
+            date_taken = image.date_taken.strftime("%d %B %Y")
+            if date_taken not in images_by_date:
+                images_by_date[date_taken] = []
+            images_by_date[date_taken].append(image)
+        return images_by_date
 
 class ImageDetailView(LoginRequiredMixin, View):
     template_name = "photo_viewer/image_detail.html"
@@ -58,7 +69,7 @@ class ImageDetailView(LoginRequiredMixin, View):
                 "image": image,
                 "user_id": request.user.id,
                 "uploaded_by": str(photographer_name),
-                "uploaded_at": image.date_created.strftime("%d %B %Y %H:%M:%S"),
+                "uploaded_at": image.date_uploaded.strftime("%d %B %Y %H:%M:%S"),
             },
         )
 

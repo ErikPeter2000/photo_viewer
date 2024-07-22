@@ -17,10 +17,10 @@ class ImageReportAdmin(admin.ModelAdmin):
     image_preview.short_description = 'Image Preview'
 
 class PhotographerImageAdmin(admin.ModelAdmin):
-    list_display = ('image_preview', 'image', 'owner', 'album', 'date_created')
-    list_filter = ('date_created',)
+    list_display = ('image_preview', 'image', 'owner', 'album', 'date_uploaded')
+    list_filter = ('date_uploaded',)
     search_fields = ('owner', 'album')
-    date_hierarchy = 'date_created'
+    date_hierarchy = 'date_uploaded'
 
     def image_preview(self, obj):
         return format_html('<img src="{}" width="75" height="auto" />', obj.preview.url)
