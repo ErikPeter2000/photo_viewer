@@ -30,6 +30,7 @@ $secret_key = [Convert]::ToBase64String($byteArray)
 $secret_key = "SECRET_KEY=$secret_key"
 $secret_key | Out-File -FilePath ".\.env" -Encoding utf8
 "CREDITS=[]" | Out-File -FilePath ".\.env" -Append -Encoding utf8
+"ALLOWED_HOSTS=[]" | Out-File -FilePath ".\.env" -Append -Encoding utf8
 
 Set-Location .\photo_viewer
 py manage.py makemigrations photo_viewer

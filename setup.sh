@@ -12,6 +12,7 @@ secret_key=$(openssl rand -base64 $length | tr -d '\n')
 # Save the secret key to .env file
 echo "SECRET_KEY=$secret_key" > .env
 echo "CREDITS=[]" >> .env
+echo "ALLOWS_HOSTS=[]" >> .env
 
 # Navigate to the photo_viewer directory and run Django management commands
 cd photo_viewer
