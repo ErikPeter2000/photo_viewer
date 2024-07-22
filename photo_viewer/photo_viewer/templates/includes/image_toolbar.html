@@ -1,4 +1,4 @@
-<div class="image-toolbar absolute bottom-0 bg-image-toolbar-background text-image-toolbar-text w-full flex box-border transition-opacity duration-300 ease-in-out p-1 gap-1">
+<div class="image-toolbar absolute bottom-0 bg-image-toolbar-background text-image-toolbar-text w-full flex box-border transition-opacity duration-300 ease-in-out p-1 gap-1" style="opacity: {{opacity|default:'0' }};">
   {% if image.owner_id == user_id %}
   <button class='icon bg-transparent hover:brightness-75 transition-brightness duration-200 ease-in-out' onclick="delete_image({{image.id}});" >
     {% include 'includes/icons/delete.html' with fill_color='#ffffff' image_id=image.id %}

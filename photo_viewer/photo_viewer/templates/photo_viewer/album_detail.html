@@ -24,7 +24,7 @@
           <a href="{% url 'image_detail' album_id=album.id image_id=image.id %}">
             <img class="image-root" src="{{ image.preview.url }}" alt="{{ image.title }}" class="block width-full">
           </a>
-          {% include 'includes/image_toolbar.html' with image=image album=album user=user_id%}
+          {% include 'includes/image_toolbar.html' with image=image album=album user=user_id %}
         </div>
       </div>
       {% endfor %}
@@ -67,7 +67,6 @@
         let zoom = 200
         const MIN = 96
         const MAX = 256
-        $('.image-toolbar').css('opacity', '0')
         $('.image-container').hover(
           function () {
             $(this).find('.image-toolbar').css('opacity', '1')
