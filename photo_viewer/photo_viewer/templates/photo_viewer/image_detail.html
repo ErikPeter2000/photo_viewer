@@ -9,7 +9,9 @@
     <div class="center-panel">
       <div class="flex flex-row justify-center mb-5">
         <div class="image-container relative hover:shadow-darker transition-shadow duration-300 ease-in-out w-fit">
+          <a href="{{ image.image.url }}">
           <img class="image-root max-h-80vh" src="{{ image.image.url }}" alt="{{ image.title }}">
+          </a>
           {% include 'includes/image_toolbar.html' with image=image album=album user=user_id opacity='1' %}
         </div>
       </div>
@@ -17,6 +19,7 @@
       <p>{{ image.description }}</p>
       <p>Uploaded by: {{ uploaded_by }}</p>
       <p>Uploaded at: {{ uploaded_at }}</p>
+      <p>Resolution: {{ image.image.width }}x{{ image.image.height }}</p>
     </div>
     <div class="absolute top-0 left-5 z-10">
       <button class="button shadow-sm" onclick="window.location.href='{% url 'album_detail' album_id=image.album.id %}'">Back to Album</button>

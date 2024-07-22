@@ -11,34 +11,48 @@
     {% if user.email %}
       <p>Email: {{ user.email }}</p>
     {% endif %}
-    <button class="button" onclick="window.location.href='{% url 'password_change' %}'" class="button-link">Change Password</button>
     <form action="{% url 'logout' %}" method="post">
       {% csrf_token %}
-      <button type="submit" class="button red">Logout</button>
+      <button type="submit" class="button">Logout</button>
     </form>
-    <button id="delete_media_button" class="button red">Delete my media</button>
+    <button class="button" onclick="window.location.href='{% url 'password_change' %}'" class="button-link">Change Password</button><br>
+    <button id="delete_media_button" class="button red">Delete my media</button><br>
+    <button id="delete_my_acount_button" class="button red">Delete my account</button>
   </div>
   <script>
+    function post_empty(url, success, error) {
+      $.ajax({
+        type: 'POST',
+        url,
+        processData: false,
+        contentType: false,
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        success,
+        error
+      })
+    }
     $('#delete_media_button').click(function (e) {
       e.preventDefault()
-      if (confirm('Are you sure you want to delete all your media?')) {
-        $.ajax({
-          type: 'POST',
-          url: "{% url 'delete_media' %}",
-          processData: false,
-          contentType: false,
-          headers: {
-            'X-CSRFToken': '{{ csrf_token }}'
-          },
-          success: function (response) {
-            console.log('Media deleted successfully')
-            window.location.reload()
-          },
-          error: function (xhr, status, error) {
-            console.error('An error occurred:', error)
-          }
+      if (confirm('Are you sure you want to delete all your media?\nThis will not delete any pending reports.')) {
+        post_empty('{% url 'delete_media' %}', () => {
+          window.location.reload()
+        }, (xhr, status, error) => {
+          console.error('There was a problem with your fetch operation:', error)
         })
       }
     })
+    $('#delete_my_acount_button').click(function (e) {
+      e.preventDefault()
+      if (confirm('Are you sure you want to delete your account? This is irreversible.')) {
+        post_empty('{% url 'delete_account' %}', () => {
+          window.location.href = '{% url 'login' %}'
+        }, (xhr, status, error) => {
+          console.error('There was a problem with your fetch operation:', error)
+        })
+      }
+    })
+
   </script>
 {% endblock %}

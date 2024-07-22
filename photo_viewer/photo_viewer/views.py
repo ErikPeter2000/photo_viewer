@@ -58,9 +58,32 @@ class ImageDetailView(LoginRequiredMixin, View):
                 "image": image,
                 "user_id": request.user.id,
                 "uploaded_by": str(photographer_name),
-                "uploaded_at": str(image.date_created),
+                "uploaded_at": image.date_created.strftime("%d %B %Y %H:%M:%S"),
             },
         )
+
+class ReportImageView(LoginRequiredMixin, View):
+    template_name = "photo_viewer/report_image.html"
+    login_url = "accounts/login/"
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, {"album_id": kwargs["album_id"], "image_id": kwargs["image_id"]})
+
+    def post(self, request, *args, **kwargs):
+        image_id = kwargs["image_id"]
+        reason = request.POST.get("reason")
+        description = request.POST.get("description")        
+        image = get_object_or_404(PhotographerImage, pk=image_id)
+        report = ImageReport(
+            image=image,
+            reporter=request.user,
+            reason=reason,
+            description=description,
+            date_reported=timezone.now(),
+        )
+        report.save()
+        messages.success(request, "Image reported successfully.")
+        return JsonResponse({"message": "Image reported successfully"}, status=200)
 
 @require_POST
 @login_required
@@ -115,29 +138,15 @@ def delete_all_user_images(request):
     messages.success(request, "All images deleted successfully.")
     return JsonResponse({"message": "All images deleted successfully"}, status=200)
 
+@require_POST
+@login_required
+def delete_account(request):
+    user = request.user
+    storage.delete_all_user_media(user)
+    user.delete()
+    messages.success(request, "Account deleted successfully.")
+    return JsonResponse({"message": "Account deleted successfully"}, status=200)
+
 @login_required
 def profile_view(request):
     return render(request, "photo_viewer/profile.html")
-
-class ReportImageView(LoginRequiredMixin, View):
-    template_name = "photo_viewer/report_image.html"
-    login_url = "accounts/login/"
-
-    def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, {"album_id": kwargs["album_id"], "image_id": kwargs["image_id"]})
-
-    def post(self, request, *args, **kwargs):
-        image_id = kwargs["image_id"]
-        reason = request.POST.get("reason")
-        description = request.POST.get("description")        
-        image = get_object_or_404(PhotographerImage, pk=image_id)
-        report = ImageReport(
-            image=image,
-            reporter=request.user,
-            reason=reason,
-            description=description,
-            date_reported=timezone.now(),
-        )
-        report.save()
-        messages.success(request, "Image reported successfully.")
-        return JsonResponse({"message": "Image reported successfully"}, status=200)
