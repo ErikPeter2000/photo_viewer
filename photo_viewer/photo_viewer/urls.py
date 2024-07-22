@@ -33,4 +33,5 @@ urlpatterns = [
     path('albums/<int:album_id>/images/<int:image_id>', views.ImageDetailView.as_view(), name='image_detail'),
     path('albums/<int:album_id>/images/<int:image_id>/delete', views.delete_image, name='delete_image'),
     path('albums/<int:album_id>/images/<int:image_id>/report', views.ReportImageView.as_view(), name='report_image'),
+    path('about', views.about_view, name='about'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

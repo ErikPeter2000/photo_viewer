@@ -1,6 +1,9 @@
 # plans and sketches
 planning/
 
+# environment
+.env
+
 # storage
 photo_viewer/media/
 

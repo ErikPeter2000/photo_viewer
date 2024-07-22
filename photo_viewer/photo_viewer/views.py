@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.views import View, generic
 from django.utils import timezone
 from .models import Album, PhotographerImage,ImageReport
-from . import storage
+from . import storage, settings
 import logging
 
 MAX_DISPLAY_ALBUMS = 5
@@ -150,3 +150,6 @@ def delete_account(request):
 @login_required
 def profile_view(request):
     return render(request, "photo_viewer/profile.html")
+
+def about_view(request):
+    return render(request, "photo_viewer/about.html", {"credits": settings.CREDITS})

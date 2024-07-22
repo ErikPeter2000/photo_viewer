@@ -1,0 +1,16 @@
+{% extends "includes/base.html" %}
+
+{% block title %}
+    About
+{% endblock %}
+
+{% block content %}
+<div class="center-panel">
+    <h1 class="section-title">About</h1>
+    <p class="mb-2">This is a simple photo sharing website built with Django and Tailwind CSS.</p>
+    {% for pair in credits %}
+        <h2 class="text-2xl">{{ pair.key }}</h2>
+        <p class="mb-2">{{ pair.value }}</p>
+    {% endfor %}
+</div>
+{% endblock %}
