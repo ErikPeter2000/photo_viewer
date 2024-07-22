@@ -2,9 +2,12 @@ from PIL import Image, ExifTags, ImageFile
 from django.core.files import File
 from io import BytesIO
 from .models import PhotographerImage
-from datetime import datetime
+from django.utils import timezone
 import logging
 from concurrent.futures import ThreadPoolExecutor
+from . import settings
+import os
+import shutil
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 PREVIEW_SIZE = (200, 200)
@@ -23,7 +26,7 @@ def try_save_image(image, album, user):
         PhotographerImage.objects.create(
             image=image,
             album=album,
-            date_created=datetime.now(),
+            date_created=timezone.now(),
             owner=user,
             preview=preview
         )
@@ -68,3 +71,37 @@ def create_image_preview(image_file, size=PREVIEW_SIZE):
         image_file = File(image_io, name=image_file.name)
         
         return image_file
+    
+def delete_all_user_media(user):
+    images = PhotographerImage.objects.filter(owner=user)
+    for image in images:
+        image.delete()
+    logger.info(f"All media files for user {user.username} have been deleted.")
+    
+def delete_unreferenced_media():
+    images = PhotographerImage.objects.all()
+    media_dir = os.path.join(settings.BASE_DIR, "media")
+    for image in images:
+        if not os.path.exists(os.path.join(media_dir, image.image.name)):
+            image.delete()
+            logger.info(f"Deleted unreferenced media file: {image.image.name}")
+    logger.info("All unreferenced media files have been deleted.")
+
+def delete_all_media():
+    PhotographerImage.objects.all().delete()
+    media_dir = os.path.join(settings.BASE_DIR, "media")
+    shutil.rmtree(media_dir)
+    make_media_dirs()
+    logger.info("All media files have been deleted.")
+    
+def make_media_dirs():
+    media_dir = os.path.join(settings.BASE_DIR, "media")
+    if not os.path.exists(media_dir):
+        os.mkdir(media_dir)
+    images_dir = os.path.join(media_dir, "images")
+    if not os.path.exists(images_dir):
+        os.mkdir(images_dir)
+    preview_dir = os.path.join(images_dir, "previews")
+    if not os.path.exists(preview_dir):
+        os.mkdir(preview_dir)
+    logger.info("Media directories have been created.")

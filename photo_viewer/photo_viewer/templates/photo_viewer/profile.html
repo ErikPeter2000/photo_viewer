@@ -11,12 +11,36 @@
     {% if user.email %}
       <p>Email: {{ user.email }}</p>
     {% endif %}
-    <div class="flex-row mt-2">
-      <button class="button" onclick="window.location.href='{% url 'password_change' %}'" class="button-link">Change Password</button>
-      <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class="button bg-red-700 hover:bg-red-800">Logout</button>
-      </form>
-    </div>
+    <button class="button" onclick="window.location.href='{% url 'password_change' %}'" class="button-link">Change Password</button>
+    <form action="{% url 'logout' %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="button bg-red-700 hover:bg-red-800">Logout</button>
+    </form>
+    <button id="delete_media_button" class="button bg-red-700 hover:bg-red-800">Delete my media</button>
   </div>
+  <script>
+    $('#delete_media_button').click(function (e) {
+      e.preventDefault()
+      if (confirm('Are you sure you want to delete all your media?')) {
+        $.ajax({
+          type: 'POST',
+          url: "{% url 'delete_media' %}",
+          processData: false, // Important: Tell jQuery not to process the data
+          contentType: false, // Important: Tell jQuery not to set contentType
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          success: function (response) {
+            // Handle success
+            console.log('Media deleted successfully')
+            window.location.reload()
+          },
+          error: function (xhr, status, error) {
+            // Handle error
+            console.error('An error occurred:', error)
+          }
+        })
+      }
+    })
+  </script>
 {% endblock %}

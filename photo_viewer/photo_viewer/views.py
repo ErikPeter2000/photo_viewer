@@ -1,9 +1,7 @@
-from datetime import datetime
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from django.urls import reverse
 from django.contrib import messages
 from django.views import View, generic
 from .models import Album, PhotographerImage
@@ -106,6 +104,14 @@ def delete_image(request, *args, **kwargs):
     except:
         messages.error(request, "Image not found.")
         return JsonResponse({"message": "Image not found"}, status=404)
+
+@require_POST
+@login_required
+def delete_all_user_images(request):
+    user = request.user
+    storage.delete_all_user_media(user)
+    messages.success(request, "All images deleted successfully.")
+    return JsonResponse({"message": "All images deleted successfully"}, status=200)
 
 @login_required
 def profile_view(request):
