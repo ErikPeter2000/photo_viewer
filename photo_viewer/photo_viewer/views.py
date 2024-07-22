@@ -1,10 +1,11 @@
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.views import View, generic
-from .models import Album, PhotographerImage
+from django.utils import timezone
+from .models import Album, PhotographerImage,ImageReport
 from . import storage
 import logging
 
@@ -32,7 +33,7 @@ class AlbumDetailView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         album = Album.objects.get(id=kwargs["album_id"])
         user_id = request.user.id
-        images = PhotographerImage.objects.filter(album_id=album.id)
+        images = PhotographerImage.objects.filter(album_id=album.id).exclude(imagereport__isnull=False)
         return render(
             request,
             self.template_name,
@@ -46,6 +47,8 @@ class ImageDetailView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         image = PhotographerImage.objects.get(id=kwargs["image_id"])
+        if ImageReport.objects.filter(image=image).exists():
+            return render(request, '404.html', status=404)
         photographer_name = (
             f"{image.owner.first_name} {image.owner.last_name} ({image.owner.username})"
         )
@@ -116,3 +119,26 @@ def delete_all_user_images(request):
 @login_required
 def profile_view(request):
     return render(request, "photo_viewer/profile.html")
+
+class ReportImageView(LoginRequiredMixin, View):
+    template_name = "photo_viewer/report_image.html"
+    login_url = "accounts/login/"
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, {"album_id": kwargs["album_id"], "image_id": kwargs["image_id"]})
+
+    def post(self, request, *args, **kwargs):
+        image_id = kwargs["image_id"]
+        reason = request.POST.get("reason")
+        description = request.POST.get("description")        
+        image = get_object_or_404(PhotographerImage, pk=image_id)
+        report = ImageReport(
+            image=image,
+            reporter=request.user,
+            reason=reason,
+            description=description,
+            date_reported=timezone.now(),
+        )
+        report.save()
+        messages.success(request, "Image reported successfully.")
+        return JsonResponse({"message": "Image reported successfully"}, status=200)

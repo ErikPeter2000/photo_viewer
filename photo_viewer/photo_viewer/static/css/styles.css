@@ -595,6 +595,14 @@ form {
   background-color: #70777E;
 }
 
+.button.red {
+  background-color: #b91c1c;
+}
+
+.button.red:hover {
+  background-color: #991b1b;
+}
+
 .max-h-80vh {
   max-height: 80vh;
 }
@@ -633,6 +641,28 @@ input[type="file"] {
 
 a:hover {
   text-decoration: underline;
+}
+
+textarea {
+  display: block;
+  margin: 0.5rem 0;
+  padding: 0.2rem;
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+  width: 100%;
+  height: 10rem;
+  font-family: inherit;
+}
+
+textarea:focus {
+  outline: inherit;
+}
+
+select {
+  margin: 0.5rem 0;
+  padding: 0.2rem;
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
 }
 
 @media screen and (max-width: 640px) {
@@ -754,11 +784,6 @@ a:hover {
   background-color: #00000088;
 }
 
-.bg-red-700 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(185 28 28 / var(--tw-bg-opacity));
-}
-
 .bg-transparent {
   background-color: transparent;
 }
@@ -838,11 +863,6 @@ a:hover {
   background-color: rgb(22 101 52 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-red-800:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(153 27 27 / var(--tw-bg-opacity));
-}
-
 .hover\:underline:hover {
   text-decoration-line: underline;
 }
@@ -856,4 +876,10 @@ a:hover {
 .hover\:brightness-75:hover {
   --tw-brightness: brightness(.75);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.focus\:shadow-darker:focus {
+  --tw-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }

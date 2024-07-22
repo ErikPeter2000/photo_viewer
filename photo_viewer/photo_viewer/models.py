@@ -16,7 +16,16 @@ class PhotographerImage(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
     def __str__(self):
-        return f"{self.__class__.__name__}: {self.name}"
+        return f"{self.__class__.__name__}: {self.id}"
     @property
     def delete_url(self):
         return reverse("image_delete", kwargs={"album_id": self.album.id, "image_id": self.id})
+    
+class ImageReport(models.Model):
+    image = models.ForeignKey(PhotographerImage, on_delete=models.CASCADE)
+    reporter = models.ForeignKey(User, on_delete=models.CASCADE)
+    reason = models.CharField(max_length=64)
+    description = models.TextField()
+    date_reported = models.DateTimeField()
+    def __str__(self):
+        return f"{self.__class__.__name__}: {self.id}"

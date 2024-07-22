@@ -47,7 +47,6 @@
           throw new Error('Network response was not ok.')
         })
         .then((data) => {
-          console.log(data) // Handle success
           window.location.reload() // Reload the page after the upload is complete
         })
         .catch((error) => {
@@ -59,7 +58,6 @@
     $(document).ready(function () {
       $('.image-container').hover(
         function () {
-          console.log('hover')
           $(this).find('.image-toolbar').css('opacity', '1')
         },
         function () {
@@ -80,12 +78,16 @@
           csrfmiddlewaretoken: '{{ csrf_token }}'
         },
         success: function () {
-          window.location.reload() // Reload the page on success
+          window.location.reload()
         },
         error: function (data) {
           console.error('There has been a problem with your fetch operation:', data)
         }
       })
+    }
+    function report_image(id) {
+      let url = `{{ request.scheme }}://{{ request.get_host }}/albums/{{ album.id }}/images/${id}/report`
+      window.location.href = url;
     }
   </script>
 </div>
