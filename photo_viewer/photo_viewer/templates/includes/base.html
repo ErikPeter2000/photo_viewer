@@ -12,8 +12,10 @@
   </head>
   <body>
     <div class="container">
-      {% include 'includes/banner.html' with banner_description=title %}
-      <div class="p-2">
+      <div class=" fixed top-0 z-50 w-full h-20">
+        {% include 'includes/banner.html' with banner_description=title %}
+      </div>
+      <div class="p-2 mt-20">
         {% block content %}
 
         {% endblock %}
