@@ -10,7 +10,12 @@
       <button class="button" onclick="window.location.href='{% url 'album_detail' album_id=image.album.id %}'">Back to Album</button>
     </div>
     <div class="center-panel">
-      <img src="{{ image.image.url }}" alt="{{ image.title }}" class="max-h-80vh object-contain mx-auto my-0" />
+      <div class="flex flex-row justify-center mb-5">
+        <div class="image-container relative hover:shadow-darker transition-shadow duration-300 ease-in-out w-fit">
+          <img class="image-root max-h-80vh" src="{{ image.image.url }}" alt="{{ image.title }}">
+          {% include 'includes/image_toolbar.html' with image=image album=album user=user_id%}
+        </div>
+      </div>
       <h2>{{ image.title }}</h2>
       <p>{{ image.description }}</p>
       <p>Uploaded by: {{ uploaded_by }}</p>

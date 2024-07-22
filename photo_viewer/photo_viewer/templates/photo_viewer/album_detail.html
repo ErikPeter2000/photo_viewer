@@ -5,90 +5,117 @@
 {% endblock %}
 
 {% block content %}
-<div class="mx-3">
-  <div class="flex items-center">
-    <h1 class="section-title">{{ album.name }}</h1>
-    <form id="uploadImagesForm" method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <label for="file_input" class="button">Upload Images</label>
-      <input id="file_input" type="file" name="images" multiple/>
-    </form>
-  </div>
+  <div class="mx-3">
+    <div class="flex items-center">
+      <h1 class="section-title">{{ album.name }}</h1>
+      <form id="uploadImagesForm" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="file_input" class="button">Upload Images</label>
+        <input id="file_input" type="file" name="images" multiple />
+      </form>
+    </div>
 
-  <hr class="mb-5">
+    <hr class="mb-5" />
 
-  <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1em;">
-    {% for image in images_list.all %}
-      {% include 'includes/image_preview.html' with image=image album=album user=user_id %}
-    {% endfor %}
-  </div>
+    <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1em;">
+      {% for image in images_list.all %}
+      <div class="image-root">
+        <div class="image-container relative block hover:shadow-darker transition-shadow duration-300 ease-in-out w-fit">
+          <a href="{% url 'image_detail' album_id=album.id image_id=image.id %}">
+            <img class="image-root" src="{{ image.preview.url }}" alt="{{ image.title }}" class="block width-full">
+          </a>
+          {% include 'includes/image_toolbar.html' with image=image album=album user=user_id%}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
 
-  <script>
-    $(uploadImagesForm).on('change', function () {
-      $(this).submit()
-    });
-    $(uploadImagesForm).on('submit', function (e) {
-      e.preventDefault() // Prevent the default form submission
-      const formData = new FormData(this)
-      const csrfToken = formData.get('csrfmiddlewaretoken') // Get the CSRF token from the form
-      fetch(`{% url 'upload_image' album_id=album.id %}`, {
-        // Use the Django URL template tag to generate the URL
-        method: 'POST',
-        body: formData,
-        headers: {
-          'X-CSRFToken': csrfToken
-        },
-        credentials: 'same-origin' // Necessary for including CSRF token
+    <script>
+      $(uploadImagesForm).on('change', function () {
+        $(this).submit()
       })
-        .then((response) => {
-          if (response.ok) {
-            return response.json() // Or handle the response in a way that suits your app
+      $(uploadImagesForm).on('submit', function (e) {
+        e.preventDefault() // Prevent the default form submission
+        const formData = new FormData(this)
+        const csrfToken = formData.get('csrfmiddlewaretoken') // Get the CSRF token from the form
+        fetch(`{% url 'upload_image' album_id=album.id %}`, {
+          // Use the Django URL template tag to generate the URL
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-CSRFToken': csrfToken
+          },
+          credentials: 'same-origin' // Necessary for including CSRF token
+        })
+          .then((response) => {
+            if (response.ok) {
+              return response.json() // Or handle the response in a way that suits your app
+            }
+            throw new Error('Network response was not ok.')
+          })
+          .then((data) => {
+            window.location.reload() // Reload the page after the upload is complete
+          })
+          .catch((error) => {
+            console.error('There has been a problem with your fetch operation:', error)
+          })
+      })
+    </script>
+    <script>
+      // hovering and scrolling
+      $(document).ready(function () {
+        let zoom = 200
+        const MIN = 96
+        const MAX = 256
+        $('.image-toolbar').css('opacity', '0')
+        $('.image-container').hover(
+          function () {
+            $(this).find('.image-toolbar').css('opacity', '1')
+          },
+          function () {
+            $(this).find('.image-toolbar').css('opacity', '0')
           }
-          throw new Error('Network response was not ok.')
+        )
+        $(document).keydown(function (e) {
+          let delta
+          if (e.key === '+' || e.key === '=') {
+            delta = 16
+          } else if (e.key === '-') {
+            delta = -16
+          } else {
+            return
+          }
+          zoom = Math.min(Math.max(zoom + delta, MIN), MAX)
+      
+          // Apply the zoom
+          $('.grid').css('grid-template-columns', `repeat(auto-fill, minmax(${zoom}px, 1fr))`)
+          $('.image-root').css('height', `${zoom}px`) // Ensure you have a 'grid-item' class on your grid children
         })
-        .then((data) => {
-          window.location.reload() // Reload the page after the upload is complete
-        })
-        .catch((error) => {
-          console.error('There has been a problem with your fetch operation:', error)
-        })
-    })
-  </script>
-  <script>
-    $(document).ready(function () {
-      $('.image-container').hover(
-        function () {
-          $(this).find('.image-toolbar').css('opacity', '1')
-        },
-        function () {
-          $(this).find('.image-toolbar').css('opacity', '0')
-        }
-      )
-    })
-  </script>
-  <script>
-    function delete_image(id) {
-      // TODO: Use the Django URL template tag to generate the URL
-      let url = `{{ request.scheme }}://{{ request.get_host }}/albums/{{ album.id }}/images/${id}/delete`
-      $.ajax({
-        url,
-        type: 'POST',
-        data: {
-          image_id: id,
-          csrfmiddlewaretoken: '{{ csrf_token }}'
-        },
-        success: function () {
-          window.location.reload()
-        },
-        error: function (data) {
-          console.error('There has been a problem with your fetch operation:', data)
-        }
       })
-    }
-    function report_image(id) {
-      let url = `{{ request.scheme }}://{{ request.get_host }}/albums/{{ album.id }}/images/${id}/report`
-      window.location.href = url;
-    }
-  </script>
-</div>
+    </script>
+    <script>
+      function delete_image(id) {
+        // TODO: Use the Django URL template tag to generate the URL
+        let url = `{{ request.scheme }}://{{ request.get_host }}/albums/{{ album.id }}/images/${id}/delete`
+        $.ajax({
+          url,
+          type: 'POST',
+          data: {
+            image_id: id,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          success: function () {
+            window.location.reload()
+          },
+          error: function (data) {
+            console.error('There has been a problem with your fetch operation:', data)
+          }
+        })
+      }
+      function report_image(id) {
+        let url = `{{ request.scheme }}://{{ request.get_host }}/albums/{{ album.id }}/images/${id}/report`
+        window.location.href = url
+      }
+    </script>
+  </div>
 {% endblock %}

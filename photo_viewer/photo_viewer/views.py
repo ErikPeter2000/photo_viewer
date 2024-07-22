@@ -40,7 +40,6 @@ class AlbumDetailView(LoginRequiredMixin, View):
             {"album": album, "images_list": images, "user_id": user_id},
         )
 
-
 class ImageDetailView(LoginRequiredMixin, View):
     template_name = "photo_viewer/image_detail.html"
     login_url = "accounts/login/"
@@ -57,11 +56,11 @@ class ImageDetailView(LoginRequiredMixin, View):
             self.template_name,
             {
                 "image": image,
+                "user_id": request.user.id,
                 "uploaded_by": str(photographer_name),
                 "uploaded_at": str(image.date_created),
             },
         )
-
 
 @require_POST
 @login_required
