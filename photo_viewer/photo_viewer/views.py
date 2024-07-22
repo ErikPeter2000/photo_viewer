@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.views import View, generic
 from .models import Album, PhotographerImage
-from .storage import create_image_preview
+from . import storage
 import logging
 
 MAX_DISPLAY_ALBUMS = 5
@@ -69,27 +69,25 @@ def upload_images(request, album_id):
     images = request.FILES.getlist("images")
     if len(images) == 0:
         return JsonResponse({"message": "Please upload an image."}, status=200)
-    try:
-        # TODO: push to some queue and process in the background
-        # TODO: better image validation
-        for image in images:
-            preview = create_image_preview(image)
-            PhotographerImage.objects.create(
-                image=image,
-                album=album,
-                date_created=datetime.now(),
-                owner=request.user,
-                preview=preview,
-            )
+    # TODO: push to some queue and process in the background
+    # TODO: better image validation
+    results = storage.batch_save_images_background(images, album, request.user)
+    error_count = len([result for result in results if not result])
+    if error_count == 0:
         messages.success(
             request,
             f"{len(images)} Image{'s' if len(images) > 1 else ''} uploaded successfully.",
         )
         return JsonResponse({"message": "Images uploaded successfully"}, status=200)
-    except Exception as e:
-        messages.error(request, "Error uploading images.")
-        logger.error(f"Error uploading images: {e}\nrequest:\n{str(request)}")
-        return JsonResponse({"message": "Error uploading images."}, status=500)
+    else:
+        messages.error(
+            request,
+            f"{error_count} Image{'s' if error_count > 1 else ''} failed to upload.",
+        )
+        return JsonResponse(
+            {"message": f"{error_count} Image{'s' if error_count > 1 else ''} failed to upload."},
+            status=500,
+        )
 
 @require_POST
 @login_required

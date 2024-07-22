@@ -1,7 +1,37 @@
-from PIL import Image, ExifTags
+from PIL import Image, ExifTags, ImageFile
 from django.core.files import File
 from io import BytesIO
+from .models import PhotographerImage
+from datetime import datetime
+import logging
+from concurrent.futures import ThreadPoolExecutor
+
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 PREVIEW_SIZE = (200, 200)
+MAX_WORKERS = 4
+logger = logging.getLogger(__name__)
+
+def batch_save_images_background(images, album, user):
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = [executor.submit(try_save_image, image, album, user) for image in images]
+        results = [future.result() for future in futures]
+    return results
+        
+def try_save_image(image, album, user):
+    try:
+        preview = create_image_preview(image)
+        PhotographerImage.objects.create(
+            image=image,
+            album=album,
+            date_created=datetime.now(),
+            owner=user,
+            preview=preview
+        )
+        logger.info(f"Image uploaded: {image.name}")
+        return True
+    except Exception as e:
+        logger.error(f"Error uploading image: {e}")
+        return False
 
 def create_image_preview(image_file, size=PREVIEW_SIZE):
     with Image.open(image_file) as image:
