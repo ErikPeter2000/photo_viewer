@@ -1,3 +1,4 @@
 django
+django-user-agents
 pillow
 python-dotenv

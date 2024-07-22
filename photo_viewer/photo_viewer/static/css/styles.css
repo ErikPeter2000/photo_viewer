@@ -604,11 +604,11 @@ form {
 }
 
 .max-h-80vh {
-  max-height: 80vh;
+  max-height: 75vh;
 }
 
 .center-panel {
-  max-width: 80vh;
+  max-width: 50vw;
   margin: auto;
 }
 
@@ -716,9 +716,12 @@ select {
   margin-right: 0.75rem;
 }
 
-.my-3 {
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
 }
 
 .mb-5 {
@@ -729,32 +732,16 @@ select {
   margin-inline-start: 0.75rem;
 }
 
+.mt-20 {
+  margin-top: 5rem;
+}
+
 .mt-3 {
   margin-top: 0.75rem;
 }
 
-.mb-4 {
-  margin-bottom: 1rem;
-}
-
-.mb-2 {
-  margin-bottom: 0.5rem;
-}
-
-.mt-2 {
-  margin-top: 0.5rem;
-}
-
 .mt-5 {
   margin-top: 1.25rem;
-}
-
-.mb-1 {
-  margin-bottom: 0.25rem;
-}
-
-.mt-20 {
-  margin-top: 5rem;
 }
 
 .box-border {
@@ -773,16 +760,8 @@ select {
   display: grid;
 }
 
-.h-screen {
-  height: 100vh;
-}
-
 .h-20 {
   height: 5rem;
-}
-
-.max-h-screen {
-  max-height: 100vh;
 }
 
 .w-fit {

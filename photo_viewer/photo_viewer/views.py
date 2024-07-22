@@ -5,6 +5,7 @@ from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.views import View, generic
 from django.utils import timezone
+from django_user_agents.utils import get_user_agent
 from .models import Album, PhotographerImage,ImageReport
 from . import storage, settings
 import logging
@@ -30,7 +31,9 @@ class AlbumDetailView(LoginRequiredMixin, View):
     login_url = "accounts/login/"
     context_object_name = "images_list"
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):        
+        user_agent = get_user_agent(request)
+        is_desktop = user_agent.is_pc
         album = Album.objects.get(id=kwargs["album_id"])
         user_id = request.user.id
         images = PhotographerImage.objects.filter(album_id=album.id).exclude(imagereport__isnull=False)
@@ -39,7 +42,7 @@ class AlbumDetailView(LoginRequiredMixin, View):
         return render(
             request,
             self.template_name,
-            {"album": album, "images_list": images, "user_id": user_id},
+            {"album": album, "images_list": images, "user_id": user_id, "is_desktop": is_desktop},
         )
         
     def _group_by_date_taken(self, images):
@@ -69,7 +72,8 @@ class ImageDetailView(LoginRequiredMixin, View):
                 "image": image,
                 "user_id": request.user.id,
                 "uploaded_by": str(photographer_name),
-                "uploaded_at": image.date_uploaded.strftime("%d %B %Y %H:%M:%S"),
+                "uploaded_on": image.date_uploaded.strftime("%d %B %Y %H:%M:%S"),
+                "date_taken": image.date_taken.strftime("%d %B %Y %H:%M:%S"),
             },
         )
 

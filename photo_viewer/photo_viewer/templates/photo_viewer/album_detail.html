@@ -25,7 +25,9 @@
             <a href="{% url 'image_detail' album_id=album.id image_id=image.id %}">
               <img class="image-root" src="{{ image.preview.url }}" alt="{{ image.title }}" class="block width-full">
             </a>
-            {% include 'includes/image_toolbar.html' with image=image album=album user=user_id %}
+            {% if is_desktop %}
+              {% include 'includes/image_toolbar.html' with image=image album=album user=user_id %}
+            {% endif %}
           </div>
         </div>
         {% endfor %}
@@ -88,9 +90,8 @@
           }
           zoom = Math.min(Math.max(zoom + delta, MIN), MAX)
       
-          // Apply the zoom
           $('.grid').css('grid-template-columns', `repeat(auto-fill, minmax(${zoom}px, 1fr))`)
-          $('.image-root').css('height', `${zoom}px`) // Ensure you have a 'grid-item' class on your grid children
+          $('.image-root').css('height', `${zoom}px`)
         })
       })
     </script>

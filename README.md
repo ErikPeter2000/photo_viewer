@@ -10,15 +10,17 @@ A web app in Django for collaboratively viewing photos.
 
 ## To Run 
 
+Runs the server openly on port 8000.
+
 #### Windows
 
 ```cmd
 cd .\photo_viewer
-py manage.py runserver
+py manage.py runserver 0.0.0.0:8000
 ```
 
 #### Linux
 ```shell
 cd ./photo_viewer
-python manage.py runserver
+python manage.py runserver 0.0.0.0:8000
 ```
