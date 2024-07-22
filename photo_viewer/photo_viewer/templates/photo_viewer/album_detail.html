@@ -6,15 +6,15 @@
 
 {% block content %}
   <div class="flex-row">
-    <h1>{{ album.name }}</h1>
-    <form id="uploadImagesForm" method="post" enctype="multipart/form-data">
+    <h1 class="text-3xl mt-2 ms-2 mb-5">{{ album.name }}</h1>
+    <form id="uploadImagesForm" method="post" enctype="multipart/form-data" class="mb-5">
       {% csrf_token %}
       <input type="file" name="images" multiple />
       <button type="submit">Upload Images</button>
     </form>
   </div>
 
-  <div class="photos-grid">
+  <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1em;">
     {% for image in images_list.all %}
       {% include 'includes/image_preview.html' with image=image album=album user=user_id %}
     {% endfor %}
@@ -49,19 +49,19 @@
         })
     })
   </script>
-  {% comment %} <script>
+  <script>
     $(document).ready(function () {
-      let default_color = $('.preview-image-toolbar').css('background-color')
-      $('.preview-image-container').hover(
+      $('.image-container').hover(
         function () {
-          $(this).find('.preview-image-toolbar').css('opacity', '1')
+          console.log('hover')
+          $(this).find('.image-toolbar').css('opacity', '1')
         },
         function () {
-          $(this).find('.preview-image-toolbar').css('opacity', '0')
+          $(this).find('.image-toolbar').css('opacity', '0')
         }
       )
     })
-  </script> {% endcomment %}
+  </script>
   <script>
     function delete_image(id) {
       // TODO: Use the Django URL template tag to generate the URL

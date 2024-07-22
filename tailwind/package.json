@@ -1,0 +1,15 @@
+{
+  "name": "tailwind",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "tailwindcss": "^3.4.6"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "build": "tailwindcss build ./src/styles.css -o ../photo_viewer/photo_viewer/static/css/styles.css --watch"
+  }
+}

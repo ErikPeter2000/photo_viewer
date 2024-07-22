@@ -1,10 +1,10 @@
-<div class="banner-container">
-  <div class="banner">
-    <div class="banner-left">
-      <h1 class="banner_title">CMS Media Viewer</h1>
-      <a href="{% url 'index' %}">Home</a>
+<div class="w-full m-0 bg-banner-background text-banner-text">
+  <div class="flex flex-row justify-between items-center p-2">
+    <div class="flex flex-row gap-3 items-center">
+      <h1 class="text-lg">CMS Media Viewer</h1>
+      <a href="{% url 'index' %}" class="hover:underline">Home</a>
     </div>
-    <div class="banner-right">
+    <div class="flex flex-row gap-3 items-center">
       <h2>{{ user.username }}</h2>
       <form action="{% url 'profile' %}" method="post">
         {% csrf_token %}
@@ -16,7 +16,7 @@
     {% if messages %}
       <ul class="messages">
         {% for message in messages %}
-          <li class="message {{ message.tags }}">{{ message }}</li>
+          <li class="message {{ message.tags }} ps-2">{{ message }}</li>
         {% endfor %}
       </ul>
     {% endif %}

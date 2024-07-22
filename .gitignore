@@ -4,6 +4,9 @@ planning/
 # storage
 photo_viewer/media/
 
+# node
+*/node_modules/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
