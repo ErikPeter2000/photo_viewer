@@ -1,25 +1,31 @@
 <html>
   <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <title>
       {% block title %}
         CMS Media Viewer
       {% endblock %}
     </title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   </head>
-  <body>
-    <div class="container">
-      <div class=" fixed top-0 z-50 w-full h-20">
+  <body class="flex flex-col min-h-screen">
+    <div class="container flex-1">
+      <header class="fixed top-0 z-50 w-full h-24">
         {% include 'includes/banner.html' with banner_description=title %}
-      </div>
-      <div class="p-2 mt-20">
+      </header>
+      <div class="p-2 mt-28 mb-24">
         {% block content %}
 
         {% endblock %}
       </div>
     </div>
+    <footer class="footer">
+      {% include 'includes/footer.html' %}
+    </footer>
   </body>
 </html>

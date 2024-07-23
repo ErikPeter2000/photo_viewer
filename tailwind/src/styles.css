@@ -1,6 +1,11 @@
 @tailwind base;
 @tailwind components;
 
+html {
+    font-family: "Poppins", sans-serif;
+    scroll-behavior: smooth;
+}
+
 form {
     margin: 0;
 }
@@ -10,16 +15,19 @@ form {
     border-style: solid;
     margin: 0;
 }
+
 .message.error {
     background-color: theme('colors.error-background');
     border-color: theme('colors.error-text');
     color: theme('colors.error-text');
 }
+
 .message.success {
     background-color: theme('colors.success-background');
     border-color: theme('colors.success-text');
     color: theme('colors.success-text');
 }
+
 .button {
     color: theme('colors.button-text');
     margin: 0.2rem 0;
@@ -30,47 +38,85 @@ form {
     background-color: theme('colors.button-background');
     transition: background-color 0.2s;
 }
+
 .button:hover {
     background-color: theme('colors.button-background-hover');
 }
+
 .button.red {
     background-color: theme('colors.red.700');
 }
+
 .button.red:hover {
     background-color: theme('colors.red.800');
 }
+
 .max-h-80vh {
     max-height: 75vh;
 }
+
+.max-w-80rem {
+    max-width: 80rem;
+}
+
 .center-panel {
     max-width: 50vw;
     margin: auto;
 }
+
 .section-title {
     margin: 1rem 0.5em 1rem 0;
-    font-size: 2.25rem;
-    line-height: 2.5rem;
+    font-size: 2.5rem;
+    line-height: 2.75rem;
 }
+
+.subsection-title {
+    margin: 1.5rem 0.5em 0.5rem 0;
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+}
+
 li {
     list-style-type: disc;
     margin-left: 1.5em;
 }
+
 ol {
     list-style-type: decimal;
     margin-left: 1.5em;
 }
+
 input {
     margin: 0.5rem 0;
     padding: 0.2rem;
     border-radius: 0.25rem;
     border: 1px solid #ccc;
 }
+
 input[type="file"] {
-    display: none;    
+    display: none;
 }
-a:hover {
-    text-decoration: underline;
+
+a img {
+    transition: filter 0.3s;
 }
+
+a img:hover {
+    filter: brightness(105%);
+}
+
+.link{
+    transition: filter 0.3s;
+}
+.link.dark:hover {
+    filter: brightness(120%);
+    cursor: pointer;
+}
+.link:hover {
+    filter: brightness(80%);
+    cursor: pointer;
+}
+
 textarea {
     display: block;
     margin: 0.5rem 0;
@@ -81,15 +127,18 @@ textarea {
     height: 10rem;
     font-family: inherit;
 }
+
 textarea:focus {
     outline: inherit;
 }
+
 select {
     margin: 0.5rem 0;
     padding: 0.2rem;
     border-radius: 0.25rem;
     border: 1px solid #ccc;
 }
+
 @media screen and (max-width: 640px) {
     .center-panel {
         max-width: 100%;

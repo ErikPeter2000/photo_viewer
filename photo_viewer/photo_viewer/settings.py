@@ -14,11 +14,11 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 import json
-load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(override=True)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -29,6 +29,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = json.loads(os.getenv("ALLOWED_HOSTS"))
+print("ALLOWED_HOSTS: ", os.getenv("ALLOWED_HOSTS"))
 
 
 # Application definition
@@ -119,7 +120,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'photo_viewer/static'),
+]
 
 # Media files (Images)
 MEDIA_URL = '/media/'

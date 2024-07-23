@@ -26,6 +26,7 @@ def batch_save_images_background(images, album, user):
 
 def try_save_image(image, album, user):
     try:
+        logger.info(f"Saving image: {image.name}")
         preview = create_image_preview(image)
         date_taken = get_image_taken_date(image)
         PhotographerImage.objects.create(
@@ -36,10 +37,10 @@ def try_save_image(image, album, user):
             owner=user,
             preview=preview,
         )
-        logger.info(f"Image uploaded: {image.name}")
+        logger.info(f"Image saved: {image.name}")
         return True
     except Exception as e:
-        logger.error(f"Error uploading image: {e}")
+        logger.error(f"Error saving image: {e}")
         return False
 
 

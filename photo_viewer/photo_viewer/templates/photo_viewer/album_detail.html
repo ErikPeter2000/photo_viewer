@@ -16,12 +16,12 @@
     </div>
 
     {% for date, images in images_list.items %}
-      <h2 class="text-2xl mt-5 mb-1">{{ date }}</h2>
+      <h2 class="subsection-title">{{ date }}</h2>
       <hr class="mb-2">
-      <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1em;">
+      <div class="grid" style="grid-template-columns: repeat(auto-fill, 200px); gap: 0.4em;">
         {% for image in images %}
         <div class="image-root">
-          <div class="image-container relative block hover:shadow-darker transition-shadow duration-300 ease-in-out w-fit">
+          <div class="image-container relative block shadow-sm rounded-sm hover:shadow-darker transition-shadow duration-300 ease-in-out w-fit">
             <a href="{% url 'image_detail' album_id=album.id image_id=image.id %}">
               <img class="image-root" src="{{ image.preview.url }}" alt="{{ image.title }}" class="block width-full">
             </a>
@@ -90,7 +90,7 @@
           }
           zoom = Math.min(Math.max(zoom + delta, MIN), MAX)
       
-          $('.grid').css('grid-template-columns', `repeat(auto-fill, minmax(${zoom}px, 1fr))`)
+          $('.grid').css('grid-template-columns', `repeat(auto-fill, ${zoom}px)`)
           $('.image-root').css('height', `${zoom}px`)
         })
       })
