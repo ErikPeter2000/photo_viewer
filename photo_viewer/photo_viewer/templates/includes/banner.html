@@ -1,7 +1,7 @@
 {% load static %}
 <div class="w-full m-0 bg-banner-background text-banner-text backdrop-blur-xl h-full">
   <div class="flex flex-row justify-between items-center p-5 h-full">
-    <div class="flex flex-row gap-3 items-baseline">
+    <div class="flex flex-row gap-3 items-center">
       <h1 class="text-3xl font-medium">CMS Media Viewer</h1>
       <a href="{% url 'index' %}" class="link ms-5 text-lg">Home</a>
     </div>
@@ -9,7 +9,7 @@
       <p class="text-lg">{{ user.username }}</p>
       <form action="{% url 'profile' %}" method="post">
         {% csrf_token %}
-        <button type="submit" class="link pe-5"><img class="h-8" src={% static 'svg/menu.svg'%}></img></button>
+        <button type="submit" class="link pe-5"><img class="h-8" src={% static 'svg/settings.svg'%}></img></button>
       </form>
     </div>
   </div>

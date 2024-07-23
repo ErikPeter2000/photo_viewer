@@ -8,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 from . import settings
 import os
 import shutil
+import asyncio
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 PREVIEW_SIZE = (200, 200)
@@ -15,7 +16,11 @@ MAX_WORKERS = 4
 logger = logging.getLogger(__name__)
 
 
-def batch_save_images_background(images, album, user):
+async def save_images_background(images, album, user):
+    return await asyncio.create_task(save_images_concurrently(images, album, user))
+
+async def save_images_concurrently(images, album, user):
+    logger.info(f"Saving {len(images)} images to album {album.name}.")
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = [
             executor.submit(try_save_image, image, album, user) for image in images
@@ -50,7 +55,10 @@ def get_image_taken_date(image_file):
             for exif in image._getexif().items():
                 if ExifTags.TAGS.get(exif[0]) == "DateTimeOriginal":
                     date_str = exif[1]
-                    return timezone.datetime.strptime(date_str, "%Y:%m:%d %H:%M:%S")
+                    date =  timezone.datetime.strptime(date_str, "%Y:%m:%d %H:%M:%S")
+                    if date.tzinfo is None:
+                        date = timezone.make_aware(date, timezone.utc)
+                    return date
         except AttributeError:
             return None
     return None
@@ -71,10 +79,9 @@ def create_image_preview(image_file, size=PREVIEW_SIZE):
             elif exif[orientation] == 8:
                 image = image.rotate(90, expand=True)
         except (AttributeError, KeyError, IndexError):
-            # cases: image don't have getexif
             pass
 
-        # crop to a square
+        # crop and shrink
         width, height = image.size
         new_size = min(width, height)
         start_x = (width - new_size) // 2
@@ -82,7 +89,6 @@ def create_image_preview(image_file, size=PREVIEW_SIZE):
         end_x = start_x + new_size
         end_y = start_y + new_size
         image = image.crop((start_x, start_y, end_x, end_y))
-        # shrink
         image.thumbnail(size)
 
         # save the image to a BytesIO object

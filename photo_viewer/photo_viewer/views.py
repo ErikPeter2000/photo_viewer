@@ -1,5 +1,8 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from asgiref.sync import sync_to_async
+from django.utils.decorators import decorator_from_middleware_with_args
+from django.contrib.auth.middleware import AuthenticationMiddleware
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib import messages
@@ -9,7 +12,9 @@ from django_user_agents.utils import get_user_agent
 from .models import Album, PhotographerImage,ImageReport
 from . import storage, settings
 import logging
+import asyncio
 
+async_login_required = decorator_from_middleware_with_args(AuthenticationMiddleware)
 MAX_DISPLAY_ALBUMS = 5
 logger = logging.getLogger(__name__)
 
@@ -38,7 +43,6 @@ class AlbumDetailView(LoginRequiredMixin, View):
         user_id = request.user.id
         images = PhotographerImage.objects.filter(album_id=album.id).exclude(imagereport__isnull=False)
         images = self._group_by_date_taken(images)
-        print(images)
         return render(
             request,
             self.template_name,
@@ -102,15 +106,13 @@ class ReportImageView(LoginRequiredMixin, View):
         return JsonResponse({"message": "Image reported successfully"}, status=200)
 
 @require_POST
-@login_required
-def upload_images(request, album_id):
-    album = get_object_or_404(Album, pk=album_id)
+async def upload_images(request, *args, **kwargs):
+    album_id = kwargs["album_id"]
+    album = await sync_to_async(get_object_or_404)(Album, pk=album_id)
     images = request.FILES.getlist("images")
     if len(images) == 0:
         return JsonResponse({"message": "Please upload an image."}, status=200)
-    # TODO: push to some queue and process in the background
-    # TODO: better image validation
-    results = storage.batch_save_images_background(images, album, request.user)
+    results = await storage.save_images_background(images, album, request.user)
     error_count = len([result for result in results if not result])
     if error_count == 0:
         messages.success(
@@ -121,12 +123,13 @@ def upload_images(request, album_id):
     else:
         messages.error(
             request,
-            f"{error_count} Image{'s' if error_count > 1 else ''} failed to upload.",
+            f"{error_count}/{len(images)} Files{'s' if error_count > 1 else ''} failed to upload.",
         )
         return JsonResponse(
-            {"message": f"{error_count} Image{'s' if error_count > 1 else ''} failed to upload."},
-            status=500,
+            {"message": f"{error_count} Files{'s' if error_count > 1 else ''} failed to upload."},
+            status=400,
         )
+    
 
 @require_POST
 @login_required

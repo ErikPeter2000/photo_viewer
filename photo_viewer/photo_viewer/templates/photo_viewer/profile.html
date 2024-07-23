@@ -11,7 +11,14 @@
     {% if user.email %}
       <p>Email: {{ user.email }}</p>
     {% endif %}
-    <form action="{% url 'logout' %}" method="post">
+    {% if user.first_name %}
+      <p>First Name: {{ user.first_name }}</p>
+    {% endif %}
+    {% if user.last_name %}
+      <p>Last Name: {{ user.last_name }}</p>
+    {% endif %}
+    <p>Member since: {{ user.date_joined|date:"d M Y" }}</p>
+    <form action="{% url 'logout' %}" method="post" class="mt-3">
       {% csrf_token %}
       <button type="submit" class="button">Logout</button>
     </form>

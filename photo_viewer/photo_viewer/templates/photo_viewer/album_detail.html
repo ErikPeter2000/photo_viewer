@@ -57,11 +57,11 @@
             }
             throw new Error('Network response was not ok.')
           })
-          .then((data) => {
-            window.location.reload() // Reload the page after the upload is complete
-          })
           .catch((error) => {
             console.error('There has been a problem with your fetch operation:', error)
+          })
+          .finally((data) => {
+            window.location.reload() // Reload the page after the upload is complete
           })
       })
     </script>
@@ -95,29 +95,6 @@
         })
       })
     </script>
-    <script>
-      function delete_image(id) {
-        // TODO: Use the Django URL template tag to generate the URL
-        let url = `{{ request.scheme }}://{{ request.get_host }}/albums/{{ album.id }}/images/${id}/delete`
-        $.ajax({
-          url,
-          type: 'POST',
-          data: {
-            image_id: id,
-            csrfmiddlewaretoken: '{{ csrf_token }}'
-          },
-          success: function () {
-            window.location.reload()
-          },
-          error: function (data) {
-            console.error('There has been a problem with your fetch operation:', data)
-          }
-        })
-      }
-      function report_image(id) {
-        let url = `{{ request.scheme }}://{{ request.get_host }}/albums/{{ album.id }}/images/${id}/report`
-        window.location.href = url
-      }
-    </script>
+    {% include 'includes/image_toolbar_scripts.html' %}
   </div>
 {% endblock %}

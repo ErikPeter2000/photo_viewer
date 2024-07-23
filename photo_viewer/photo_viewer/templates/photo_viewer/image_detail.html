@@ -26,4 +26,6 @@
       <button class="button shadow-sm" onclick="window.location.href='{% url 'album_detail' album_id=image.album.id %}'">Back to Album</button>
     </div>
   </div>
+  {% url 'album_detail' album_id=image.album.id as redirect %}
+  {% include 'includes/image_toolbar_scripts.html' with album=image.album redirect=redirect %}
 {% endblock %}

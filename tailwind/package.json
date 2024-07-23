@@ -11,5 +11,8 @@
   },
   "scripts": {
     "build": "tailwindcss build ./src/styles.css -o ../photo_viewer/photo_viewer/static/css/styles.css --watch"
+  },
+  "dependencies": {
+    "tailwind": "^4.0.0"
   }
 }

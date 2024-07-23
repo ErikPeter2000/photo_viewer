@@ -1,0 +1,28 @@
+<script>
+  function delete_image(id) {
+    // TODO: Use the Django URL template tag to generate the URL
+    let url = `{{ request.scheme }}://{{ request.get_host }}/albums/{{ album.id }}/images/${id}/delete`
+    $.ajax({
+      url,
+      type: 'POST',
+      data: {
+        image_id: id,
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+      },
+      success: function () {
+        {% if redirect %}
+        window.location.href = '{{ redirect }}'
+        {% else %}
+        window.location.reload()
+        {% endif %}
+      },
+      error: function (data) {
+        console.error('There has been a problem with your fetch operation:', data)
+      }
+    })
+  }
+  function report_image(id) {
+    let url = `{{ request.scheme }}://{{ request.get_host }}/albums/{{ album.id }}/images/${id}/report`
+    window.location.href = url
+  }
+</script>

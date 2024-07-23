@@ -1,0 +1,72 @@
+<div class="absolute w-full h-full" style="z-index: -1;">
+    <canvas class="absolute w-full h-full" id="background-canvas"></canvas>
+    <div class="absolute w-full h-full backdrop-blur-2xl"></div>
+</div>
+<script>
+    $(document).ready(() => {
+        const canvas = document.getElementById('background-canvas');
+        const ctx = canvas.getContext('2d');
+        function rng(seed){
+            const a = 1664525;
+            const c = 1013904223;
+            const m = 2**32-1; // Modulus value
+            let state = seed % m;
+            function next(){
+                state = (a * state + c) % m;
+                return state / m;
+            }
+            for (let i = 0; i < 10; i++){
+                next();
+            }
+            return {
+                next
+            }
+        }
+        const rand = rng(canvas.height + canvas.width);
+        const blobs = [];
+        const color = '#47494915';
+        const speed = 1;
+        const turn_speed = 0.01;
+        const blob_count = 100;
+        const min_radius = 10;
+        const max_radius = 200;
+        function calculate(){
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            // generate a nice patter of lines:
+            for (let i = 0; i < blob_count; i++) {
+                const x = rand.next() * canvas.width;
+                const y = rand.next() * canvas.height;
+                const radius = rand.next() * (max_radius - min_radius) + min_radius;
+                const angle = rand.next() * 2 * Math.PI;
+                blobs.push({x, y, radius, angle});
+            }
+        }
+        calculate();
+        function draw(){
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = color;
+            for (const blob of blobs){
+                ctx.beginPath();
+                ctx.arc(blob.x, blob.y, blob.radius, 0, 2 * Math.PI);
+                blob.x += Math.cos(blob.angle) * speed;
+                blob.y += Math.sin(blob.angle) * speed;
+                if (blob.x < 0 || blob.x > canvas.width){
+                    blob.angle = Math.PI - blob.angle;
+                }
+                if (blob.y < 0 || blob.y > canvas.height){
+                    blob.angle = -blob.angle;
+                }
+                blob.angle += (rand.next() - 0.5) * turn_speed;
+                ctx.fill();
+            }            
+            requestAnimationFrame(draw);
+        }
+        draw();
+        $(window).on('resize', calculate);
+    });
+</script>
+

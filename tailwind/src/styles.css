@@ -1,5 +1,6 @@
 @tailwind base;
 @tailwind components;
+@tailwind utilities;
 
 html {
     font-family: "Poppins", sans-serif;
@@ -105,13 +106,15 @@ a img:hover {
     filter: brightness(105%);
 }
 
-.link{
+.link {
     transition: filter 0.3s;
 }
+
 .link.dark:hover {
     filter: brightness(120%);
     cursor: pointer;
 }
+
 .link:hover {
     filter: brightness(80%);
     cursor: pointer;
@@ -144,4 +147,3 @@ select {
         max-width: 100%;
     }
 }
-@tailwind utilities;
